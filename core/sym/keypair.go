@@ -2,9 +2,10 @@ package sym
 
 import (
 	"crypto/ed25519"
+	"fmt"
 	"log"
 	"strconv"
-	"symbol-sdk-go/core/utils"
+	"symbol-sdk-go/core"
 )
 
 type VerifierBase interface {
@@ -17,9 +18,10 @@ type KeyPair struct {
 }
 
 func NewKeyPair(privateKey string) *KeyPair {
-	privKey := ed25519.NewKeyFromSeed(utils.Unhexify(privateKey))
-	if len(privKey) != ed25519.SeedSize {
-		log.Fatal("privateKey size not equal to " + strconv.Itoa(ed25519.SeedSize))
+	privKey := ed25519.NewKeyFromSeed(core.Unhexify(privateKey))
+	fmt.Println(privKey)
+	if len(privKey) != ed25519.PrivateKeySize {
+		log.Fatal("privateKey size not equal to " + strconv.Itoa(ed25519.PrivateKeySize))
 		return nil
 	}
 	PubKey, ok := privKey.Public().(ed25519.PublicKey)
@@ -35,11 +37,11 @@ func NewKeyPair(privateKey string) *KeyPair {
 }
 
 func (kp KeyPair) PrivateKey() string {
-	return utils.Hexify(kp.PrivKey)
+	return core.Hexify(kp.PrivKey)
 }
 
 func (kp KeyPair) PublicKey() string {
-	return utils.Hexify(kp.PubKey)
+	return core.Hexify(kp.PubKey)
 }
 
 type Verifier struct {
@@ -47,7 +49,7 @@ type Verifier struct {
 }
 
 func NewVerifier(publicKey string) *Verifier {
-
+	return nil
 }
 
 /// todo,

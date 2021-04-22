@@ -3,7 +3,6 @@ package core
 import (
 	"bytes"
 	"strings"
-	"symbol-sdk-go/core/utils"
 )
 
 type ByteArray struct {
@@ -20,7 +19,7 @@ func NewByteArray(size int, array interface{}, tag string) *ByteArray {
 
 	arrayString, ok := array.(string)
 	if ok {
-		ba.Bytes = utils.Unhexify(arrayString)
+		ba.Bytes = Unhexify(arrayString)
 	}
 
 	arrayBytes, ok := array.([]byte)
@@ -32,9 +31,9 @@ func NewByteArray(size int, array interface{}, tag string) *ByteArray {
 }
 
 func (ba ByteArray) Equal(other ByteArray) bool {
-	return bytes.Compare(ba.Bytes, other.Bytes) == 0 && ba.Tag == other.Tag
+	return bytes.Equal(ba.Bytes, other.Bytes) && ba.Tag == other.Tag
 }
 
 func (ba ByteArray) String() string {
-	return strings.ToUpper(utils.Hexify(ba.Bytes))
+	return strings.ToUpper(Hexify(ba.Bytes))
 }
