@@ -30,9 +30,9 @@ func (mhb *MerkleHashBuilder) Update(componentHash interface{}) {
 	fmt.Println(len(mhb.Hashes))
 }
 
-func (mhb *MerkleHashBuilder) Final() core.Hash256 {
+func (mhb *MerkleHashBuilder) Final() *core.Hash256 {
 	if len(mhb.Hashes) == 0 {
-		return *core.Hash256Zero()
+		return core.Hash256Zero
 	}
 
 	numRemainingHashes := len(mhb.Hashes)
@@ -55,16 +55,16 @@ func (mhb *MerkleHashBuilder) Final() core.Hash256 {
 			mhb.Hashes[int(math.Floor(float64(idx)/2))] = hasher.Sum(nil)
 			idx += 2
 
-			mhb.Print()
+			// mhb.Print()
 		}
 		numRemainingHashes /= 2
 	}
-	return *core.NewHash256(core.Hexify(mhb.Hashes[0]))
+	return core.NewHash256(core.Hexify(mhb.Hashes[0]))
 }
 
-func (mhb MerkleHashBuilder) Print() {
-	fmt.Println("==")
-	for _, hash := range mhb.Hashes {
-		fmt.Println(core.Hexify(hash))
-	}
-}
+// func (mhb MerkleHashBuilder) Print() {
+// 	fmt.Println("==")
+// 	for _, hash := range mhb.Hashes {
+// 		fmt.Println(core.Hexify(hash))
+// 	}
+// }

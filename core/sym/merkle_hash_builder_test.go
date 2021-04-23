@@ -7,7 +7,7 @@ import (
 )
 
 func TestMerkleZero(t *testing.T) {
-	if !bytes.Equal(core.Hash256Zero().Bytes, calculateMerkleHash([]string{}).Bytes) {
+	if !bytes.Equal(core.Hash256Zero.Bytes, calculateMerkleHash([]string{}).Bytes) {
 		t.Fail()
 	}
 }
@@ -24,7 +24,7 @@ func TestMerkleHashes(t *testing.T) {
 		"410330530D04A277A7C96C1E4F34184FDEB0FFDA63563EFD796C404D7A6E5A20",
 	}
 	res := "7D853079F5F9EE30BDAE49C4956AF20CDF989647AFE971C069AC263DA1FFDF7E"
-	if res != (core.ByteArray)(calculateMerkleHash(merkleHashes)).String() {
+	if res != calculateMerkleHash(merkleHashes).String() {
 		t.Fail()
 	}
 
@@ -36,12 +36,13 @@ func TestMerkleHashes(t *testing.T) {
 		"421D6B68A6DF8BB1D5C9ACF7ED44515E77945D42A491BECE68DA009B551EE6CE",
 	}
 	res = "DEFB4BF7ACF2145500087A02C88F8D1FCF27B8DEF4E0FDABE09413D87A3F0D09"
-	if (core.ByteArray)(calculateMerkleHash(unBalancedHashes)).String() != res {
+
+	if calculateMerkleHash(unBalancedHashes).String() != res {
 		t.Fail()
 	}
 }
 
-func calculateMerkleHash(hashes []string) core.Hash256 {
+func calculateMerkleHash(hashes []string) *core.Hash256 {
 	builder := NewMerkleHashBuilder()
 	for _, str := range hashes {
 		builder.Update(str)
