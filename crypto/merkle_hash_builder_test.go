@@ -1,18 +1,12 @@
-package sym
+package crypto
 
 import (
 	"bytes"
-	"symbol-sdk-go/core"
+	"symbol-sdk-go/utils"
 	"testing"
 )
 
-func TestMerkleZero(t *testing.T) {
-	if !bytes.Equal(core.Hash256Zero.Bytes, calculateMerkleHash([]string{}).Bytes) {
-		t.Fail()
-	}
-}
-
-func TestMerkleHashes(t *testing.T) {
+func TestNewMerkleHashBuilder(t *testing.T) {
 	merkleHashes := []string{
 		"36C8213162CDBC78767CF43D4E06DDBE0D3367B6CEAEAEB577A50E2052441BC8",
 		"8A316E48F35CDADD3F827663F7535E840289A16A43E7134B053A86773E474C28",
@@ -24,7 +18,8 @@ func TestMerkleHashes(t *testing.T) {
 		"410330530D04A277A7C96C1E4F34184FDEB0FFDA63563EFD796C404D7A6E5A20",
 	}
 	res := "7D853079F5F9EE30BDAE49C4956AF20CDF989647AFE971C069AC263DA1FFDF7E"
-	if res != calculateMerkleHash(merkleHashes).String() {
+
+	if bytes.Compare(utils.Unhexify(res), calculateMerkleHash(merkleHashes)) != 0 {
 		t.Fail()
 	}
 
@@ -37,15 +32,15 @@ func TestMerkleHashes(t *testing.T) {
 	}
 	res = "DEFB4BF7ACF2145500087A02C88F8D1FCF27B8DEF4E0FDABE09413D87A3F0D09"
 
-	if calculateMerkleHash(unBalancedHashes).String() != res {
+	if bytes.Compare(utils.Unhexify(res), calculateMerkleHash(unBalancedHashes)) != 0 {
 		t.Fail()
 	}
 }
 
-func calculateMerkleHash(hashes []string) *core.Hash256 {
+func calculateMerkleHash(hashes []string) []byte {
 	builder := NewMerkleHashBuilder()
-	for _, str := range hashes {
-		builder.Update(str)
+	for _, hash := range hashes {
+		builder.Update(utils.Unhexify(hash))
 	}
 	return builder.Final()
 }
