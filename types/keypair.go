@@ -5,6 +5,10 @@ import (
 	"log"
 )
 
+const (
+	PrivateKeySize = 32
+)
+
 type PublicKey []byte
 type PrivateKey []byte
 

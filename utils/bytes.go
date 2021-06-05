@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto/rand"
 	"encoding/binary"
 	"encoding/hex"
 )
@@ -64,4 +65,10 @@ func LittleEndianBytes2Int(bs []byte) int {
 func LittleEndianBytes2Uint64(bs []byte) uint64 {
 	data := binary.LittleEndian.Uint64(bs)
 	return data
+}
+
+func RandomBytes(len int) []byte {
+	bs := make([]byte, len)
+	rand.Read(bs)
+	return bs
 }
