@@ -8,19 +8,16 @@ import (
 )
 
 var (
-	EncodedAddress = "TBLYH55IHPS5QCCMNWR3GZWKV6WMCKPTNI7KSDA"
+	EncodedAddress = SymAddress("TBLYH55IHPS5QCCMNWR3GZWKV6WMCKPTNI7KSDA")
 	DecodedAddress = utils.Unhexify("985783F7A83BE5D8084C6DA3B366CAAFACC129F36A3EA90C")
 )
 
 func TestDecodeAddress(t *testing.T) {
-
 	if len(DecodedAddress) != AddressSize {
 		t.Fail()
 	}
 
-	decodedAddress, err := DecodeAddress(EncodedAddress)
-	t.Log(decodedAddress)
-	t.Log(DecodedAddress)
+	decodedAddress, err := EncodedAddress.DecodeAddress()
 	if err != nil {
 		t.Fail()
 	}
@@ -31,10 +28,8 @@ func TestDecodeAddress(t *testing.T) {
 }
 
 func TestEncodeAddress(t *testing.T) {
-	encodedAddress := EncodeAddress(DecodedAddress)
-	t.Log(encodedAddress)
-	t.Log(EncodedAddress)
-	if strings.Compare(encodedAddress, EncodedAddress) != 0 {
+	encodedAddress := EncodeSymAddress(DecodedAddress)
+	if strings.Compare(string(encodedAddress), string(EncodedAddress)) != 0 {
 		t.Fail()
 	}
 }
